@@ -1,0 +1,17 @@
+name: selector
+version: 1.0.0
+
+authors:
+  - Kirk Haines <wyhaines@gmail.com>
+
+targets:
+  selector:
+    main: src/selector.cr
+
+crystal: '>= 1.14.0'
+
+dependencies:
+  term-screen:
+    github: crystal-term/screen
+
+license: "Apache 2.0"

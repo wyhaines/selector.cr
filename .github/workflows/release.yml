@@ -1,0 +1,95 @@
+name: Selector Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "*.*.*"
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Crystal
+        run: brew install openssl crystal
+      - name: Install dependencies
+        run: shards install
+      - name: Build the binary
+        run: |
+          ln -s /usr/lib/libxml2.2.dylib /usr/local/lib/liblibxml2.tbd.dylib
+          shards build --release --stats --progress
+      - name: Compress the binary
+        run: zip -rjX ./selector-macos.zip ./bin/selector
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: selector
+          path: ./selector-macos.zip
+
+#  build-macos-13:
+#    runs-on: macos-13
+#    steps:
+#      - name: Checkout repository
+#        uses: actions/checkout@v2
+#      - name: Brew Update
+#        run: brew update
+#      - name: Install OpenSSL
+#        run: brew install openssl
+#      - name: Install Crystal
+#        run: brew install --overwrite crystal
+#      - name: Install dependencies
+#        run: shards install
+#      - name: Build the binary
+#        run: |
+#          ln -s /usr/lib/libxml2.2.dylib /usr/local/lib/liblibxml2.tbd.dylib
+#          shards build --release --stats --progress
+#      - name: Compress the binary
+#        run: zip -rjX ./selector-macos13.zip ./bin/selector
+#      - name: Upload
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: selector-macos13
+#          path: ./selector-macos13.zip
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+      - name: Install dependencies
+        run: shards install
+      - name: Build the binary
+        run: |
+          shards build --release --static --stats --progress
+      - name: Compress the binary
+        run: |
+          gzip -9 ./bin/selector
+          mv ./bin/selector.gz ./bin/selector-linux-x86_64.gz
+      - name: Upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: selector-linux-x86_64
+          path: ./bin/selector-linux-x86_64.gz
+
+  release:
+    #needs: [build-macos, build-linux, build-macos-13]
+    needs: [build-macos, build-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: ./artifacts
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+#            ./artifacts/selector-macos13/selector-macos13.zip
+          files: |
+            ./artifacts/selector-macos/selector-macos.zip
+            ./artifacts/selector-linux-x86_64/selector-linux-x86_64.gz
+          token: ${{ secrets.GITHUB_TOKEN }}
