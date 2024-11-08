@@ -6,6 +6,8 @@ on:
     tags:
       - "*.*.*"
 
+permissions: write-all
+
 jobs:
   build-macos:
     runs-on: macos-latest
