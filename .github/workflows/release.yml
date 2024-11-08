@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Install Crystal
-        run: brew install openssl crystal
+        run: brew install crystal
       - name: Install dependencies
         run: shards install
       - name: Build the binary

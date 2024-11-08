@@ -58,12 +58,12 @@ class Selector
 
       EHEREDOC
 
-      parser.on("-d DELIMITER", "--delimiter=DELIMITER", "Specify output delimiter") do |d|
-        delimiter = d
+      parser.on("-d DELIMITER", "--delimiter=DELIMITER", "Specify output delimiter") do |_delimiter|
+        delimiter = _delimiter
       end
 
-      parser.on("-i DELIMITER", "--input-delimiter=DELIMITER", "Specify input delimiter for STDIN (default: newline)") do |d|
-        input_delimiter = unescape_string(d)
+      parser.on("-i DELIMITER", "--input-delimiter=DELIMITER", "Specify input delimiter for STDIN (default: newline)") do |_input_delimiter|
+        input_delimiter = unescape_string(_input_delimiter)
       end
 
       parser.on("-v", "--version", "Show the selector version (v#{VERSION})") do
@@ -164,13 +164,13 @@ class Selector
         end
       end
     when ' ', 'x', 'X'
-      @items[@current_index].selected = !@items[@current_index].selected
+      @items[@current_index].selected = !@items[@current_index].selected?
     when '\r', '\n'
       # Exit and print selected items
       Terminal.cooked_mode
       Terminal.show_cursor
       Terminal.clear_screen
-      selected_items = @items.select(&.selected).map(&.text)
+      selected_items = @items.select(&.selected?).map(&.text)
       print selected_items.join(@delimiter) # Use print instead of puts to handle custom delimiters properly
       exit
     when 'q', 'Q', '\u0003' # 'q', 'Q', or Ctrl+C
@@ -202,6 +202,7 @@ class Selector
   end
 
   # Special character parsing helper
+  # ameba:disable Metrics/CyclomaticComplexity
   def self.unescape_string(str : String) : String
     result = String.build do |str_build|
       i = 0
