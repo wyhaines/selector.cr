@@ -11,7 +11,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Install Crystal
         run: brew install openssl crystal
       - name: Install dependencies
@@ -23,7 +23,7 @@ jobs:
       - name: Compress the binary
         run: zip -rjX ./selector-macos.zip ./bin/selector
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: selector
           path: ./selector-macos.zip
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Install Crystal
         uses: crystal-lang/install-crystal@v1
       - name: Install dependencies
@@ -70,7 +70,7 @@ jobs:
           gzip -9 ./bin/selector
           mv ./bin/selector.gz ./bin/selector-linux-x86_64.gz
       - name: Upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: selector-linux-x86_64
           path: ./bin/selector-linux-x86_64.gz
@@ -81,14 +81,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: ./artifacts
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-#            ./artifacts/selector-macos13/selector-macos13.zip
           files: |
             ./artifacts/selector-macos/selector-macos.zip
             ./artifacts/selector-linux-x86_64/selector-linux-x86_64.gz
