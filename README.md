@@ -53,23 +53,25 @@ For command line help:
 selector -h
 ```
 
-|❯ selector -h
-|  Usage: selector [options] [items...]
-|
-|  selector displays everything passed on the command line (other than valid arguments), as well as all lines that are passed on STDIN,
-|  on-screen with a simple text based UI to scroll through them, selecting some subset. The subset that is selected will be returned on STDOUT.
-|
-|  Use the up and down arrows to move through the list.
-|  Press SPACE or 'x' to toggle the selected status of an item.
-|  Press 'q' to discard all selections and exit.
-|  Press ENTER to accept all selections.
-|
-|    -d DELIMITER, --delimiter=DELIMITER
-|                               Specify output delimiter
-|    -i DELIMITER, --input-delimiter=DELIMITER
-|                               Specify input delimiter for STDIN (default: newline)
-|    -v, --version              Show the selector version (v1.0.0)
-|    -h, --help                 Show this help
+```
+❯ selector -h
+  Usage: selector [options] [items...]
+
+  selector displays everything passed on the command line (other than valid arguments), as well as all lines that are passed on STDIN,
+  on-screen with a simple text based UI to scroll through them, selecting some subset. The subset that is selected will be returned on STDOUT.
+
+  Use the up and down arrows to move through the list.
+  Press SPACE or 'x' to toggle the selected status of an item.
+  Press 'q' to discard all selections and exit.
+  Press ENTER to accept all selections.
+
+    -d DELIMITER, --delimiter=DELIMITER
+                               Specify output delimiter
+    -i DELIMITER, --input-delimiter=DELIMITER
+                               Specify input delimiter for STDIN (default: newline)
+    -v, --version              Show the selector version (v1.0.0)
+    -h, --help                 Show this help
+```
 
 ## Contributing
 
