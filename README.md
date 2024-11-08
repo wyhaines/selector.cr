@@ -8,6 +8,10 @@ Selector implements a simple command line utility that takes a list of data item
 
 The purpose of this utility is to provide a nice UI for operations where one wants to perform batch operations on some set of manually selected items. An example of this would be a utility that lists all git branches, and then deletes the selected branches. A sample implementation of this can be found [in this gist](https://gist.github.com/wyhaines/253702f70bd6d19b695e1afc30a3dc7b).
 
+Here's an example of that gist being used to clean up some old git branches:
+
+https://github.com/user-attachments/assets/7336a809-95ad-4735-b878-c1fa204e5bf4
+
 ## Installation
 
 Download a prebuilt binary from [Releases](https://github.com/wyhaines/selector.cr/releases), or build from source.
